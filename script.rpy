@@ -1,4 +1,4 @@
-﻿define m = Character("Максвел", color="#597bd1")
+define m = Character("Максвел", color="#597bd1")
 define n = Character("Неллі", color="#cf5488")
 define nn = Character("???")
 define bob = Character("Боб", color="#37ff00")
