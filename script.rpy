@@ -40,10 +40,15 @@ label start:
     nn "???"
 
     nn "Прокинься!"
-
+    
     "Головний герой розплющив очі і побачив перед собою розмитий силует."
+    hide maks neutral
+    show nelli neutral at center:
+        blur 15
     "Йому кортіло спитати котра година, проте, відкривши очі, він побачив не свою маму, а когось іншого."
 
+    hide nelli neutral
+    show maks neutral
     m "Де я? Хто ти? Що тут взагалі відбувається?"
     hide maks neutral
     show nelli neutral
@@ -56,12 +61,15 @@ label start:
     hide maks neutral
     show nelli neutral
 
+    hide nelli neutral
+    show nelli second
+
     n "Я розумію, що ти наляканий, але не потрібно кричати. Я також не розумію, як ми сюди потрапили."
 
     m "..."
 
     n "Як я можу звертатись до тебе?"
-    hide nelli neutral
+    hide nelli second
     show maks neutral
 
     m "Я Максвел, але можна просто Макс."
@@ -83,6 +91,7 @@ label start:
     show maks neutral
     m "Не знаю, але ці черепи ставлять під сумнів нашу безпеку."
     m "Ми повинні бути обережними та не залишатись тут надто довго."
+    scene bg next
     hide maks neutral
 
     label choices:
@@ -126,8 +135,12 @@ label choices1_b:
     jump choices1_common
 
 label choices1_common:
-    #можна зробити imagemap
-    # газета
+    # Використовуємо imagemap
+    call screen firstScreen
+    return
+
+label continue_game:
+    scene bg next
     "ПІДЗЕМЕЛЛЯ ТАЄМНИЦЬ(випуск від 10 листопада 1998р.)"
     "Таємничі Підземелля: Що Сховано Глибоко Під Землею?\n
     У дебрях підземелля, відомого лише кільком обранцям, розкривається неймовірна таємниця. На перший погляд, це просто система тунелів, але є чимось надзвичайним."
@@ -163,9 +176,14 @@ label choices1_common:
     show nelli neutral
     n "Ми неодмінно знайдемо вихід, Макс. Я вірю в нас."
     hide nelli neutral
+    jump find_note
 
+label find_note:
     # записка (imagemap)
+    call screen secondScreen
+    return
 
+label continue_play:
     "У цих кам'яних стінах спочиває розгадка, Три руни відкриють тобі вихід в світло."
     show maks neutral
     m "(подумки) Руни на кам'яних стінах... це може бути підказка..."
@@ -213,6 +231,11 @@ label choices2_b:
 
 label choices2_common:
     # руни
+    call screen thirdScreen
+    return
+
+label continue_to_play:
+    show screen fourthScreen
     "Великі кам'яні брили відокремлюються, і скеля розсувається, відкриваючи новий прохід. Максвел та Неллі стоять в повному шоці, бо стали свідками дива"
     show maks neutral
     m "Що за... Я не міг уявити, що це може відбутися. Це не землетрус, це... це щось надприродне."
