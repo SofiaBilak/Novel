@@ -1,11 +1,29 @@
+define config.mouse = { }
+define config.mouse['default'] = [ ("gui/cursor.png", 0, 0) ]
+
+#Define chars
 define m = Character("Максвел", color="#597bd1")
 define n = Character("Неллі", color="#cf5488")
 define nn = Character("???")
 define bob = Character("Боб", color="#37ff00")
 
+#Define audio
+define audio.background = "audio/backgroundMusic.mp3"
+define audio.boo = "audio/boo.mp3"
+define audio.scream = "audio/scream.mp3"
+define audio.rustle = "audio/unknownRustle.mp3"
+define audio.runas1 = "audio/runasFind1.mp3"
+define audio.door = "audio/stoneDoor.mp3"
+define audio.flashlight = "audio/flashlightOn.mp3"
+
+default page_pieces = 3
+default full_page_size = (72, 67)
+default piece_coordinates = [(1411, 529), (1445, 529), (1408, 534)]
+default initial_piece_coordinates = []
+default finished_pieces = 0
+
 label start:
-    scene bg location1
-    show maks neutral
+    play music background volume 3
 
     m "Я не розумію де знаходжуся."
     m "Я не розумію чи я взагалі існую..."
@@ -40,50 +58,51 @@ label start:
     nn "???"
 
     nn "Прокинься!"
+    
+    "Я розплющив очі і побачив перед собою розмитий силует."
+    scene bg next:
+        blur 15
+    show nelli_neutral_hands_behind at center:
+        blur 15
+    "Мене кортіло спитати котра година, проте, відкривши очі, я побачив не свою маму, а когось іншого."
 
-    "Головний герой розплющив очі і побачив перед собою розмитий силует."
-    "Йому кортіло спитати котра година, проте, відкривши очі, він побачив не свою маму, а когось іншого."
-
+    hide nelli_neutral_hands_behind
     m "Де я? Хто ти? Що тут взагалі відбувається?"
-    hide maks neutral
-    show nelli neutral
+    show nelli_neutral_hands_behind
 
     n "Мене звати Неллі. - відповіла занепокоїно дівчина. - Я прокинулась досить давно, в мене ніяк не виходило розбудити тебе."
-    hide nelli neutral
-    show maks neutral
+    hide nelli_neutral_hands_behind
 
     m "Як я тут опинився? Це ти в цьому винна?!"
-    hide maks neutral
-    show nelli neutral
 
+    show nelli second
     n "Я розумію, що ти наляканий, але не потрібно кричати. Я також не розумію, як ми сюди потрапили."
+    hide nelli second
 
     m "..."
 
+    show nelli second
     n "Як я можу звертатись до тебе?"
-    hide nelli neutral
-    show maks neutral
+    hide nelli second
 
     m "Я Максвел, але можна просто Макс."
-    hide maks neutral
 
     "Максвел і Неллі ретельно досліджують підземелля, обговорюючи місцеві дивовижності."
+    scene bg location1 with dissolve
     show maks neutral
     m "(сам до себе) Дивно, тут відносно світло для підземелля. І ці камені... чому вони світяться?"
     hide maks neutral
-    show nelli neutral
+
     n "(розмірковуючи) Ніколи не бачила такого, мене це лякає."
-    hide nelli neutral
-    show maks neutral
+
     m "А от ці кістки та черепи... це виглядає тривожно."
-    hide maks neutral
-    show nelli neutral
+
     n "Можливо, це тут давно, і ми не перші, хто опинився в цьому місці... Що нам робити?"
-    hide nelli neutral
-    show maks neutral
+
     m "Не знаю, але ці черепи ставлять під сумнів нашу безпеку."
     m "Ми повинні бути обережними та не залишатись тут надто довго."
-    hide maks neutral
+
+    scene bg next with fade
 
     label choices:
 menu:
@@ -92,42 +111,47 @@ menu:
     "Сказати Неллі, що це місце виглядає небезпечно, та що краще дочекатися допомоги...":
         jump choices1_b
 label choices1_a:
-    show maks neutral
     m "Неллі, може, нам варто рухатися в напрямку світла? Можливо, це виведе нас до виходу..."
-    hide maks neutral
-    show nelli neutral
+
+    show nelli second
     n "Ходімо. Сподіваюсь, це допоможе нам вибратись звідси..."
-    hide nelli neutral
+    hide nelli second
     jump choices1_common
 
 label choices1_b:
-    show maks neutral
+
     m "Неллі, це місце виглядає небезпечно. Можливо, нам краще дочекатися допомоги..."
     m "Щось тут не так, і нам слід бути обережними..."
-    hide maks neutral
-    show nelli neutral
+
+    show nelli_thinking_arms_on_belt
     n "Ми вже чекаємо допомоги так довго і нічого не змінилося..."
     n "Ми одні в підземеллі, не відомо де, і навіть не відомо, чи хтось узагалі дізнається, що ми тут..."
     n "Ти дійсно думаєш, що нам хтось допоможе?"
-    hide nelli neutral
-    show maks neutral
+    hide nelli_thinking_arms_on_belt
+
     m "Але, можливо, якщо ми продовжимо чекати, то нас знайдуть..."
-    hide maks neutral
-    show nelli neutral
+
+    show nelli_angry_arms_on_belt
     n "Макс, але ми самі залишаємося у цьому місці, і навіть не знаємо, як сюди потрапили..."
     n "Я не впевнена, що ми дочекаємося на чудо..."
     n "Можливо, саме зараз ми повинні взяти справу в свої руки і шукати вихід..."
+    hide nelli_angry_arms_on_belt
 
+    show nelli neutral
     n "Давай оглянемо це місце!"
     hide nelli neutral
-    show maks neutral
+
     m "Добре. Як ти вже казала, разом ми зможемо подолати це..."
 
     jump choices1_common
 
 label choices1_common:
-    #можна зробити imagemap
-    # газета
+    # Використовуємо imagemap
+    call screen firstScreen
+    return
+
+label continue_game:
+    #scene bg next
     "ПІДЗЕМЕЛЛЯ ТАЄМНИЦЬ(випуск від 10 листопада 1998р.)"
     "Таємничі Підземелля: Що Сховано Глибоко Під Землею?\n
     У дебрях підземелля, відомого лише кільком обранцям, розкривається неймовірна таємниця. На перший погляд, це просто система тунелів, але є чимось надзвичайним."
@@ -144,44 +168,49 @@ label choices1_common:
     Багато дослідників зазначають, що знайшли вихід, але його місцезнаходження залишається суворою таємницею. За останні роки чисельні експедиції не поверталися."
     "Ми продовжуємо слідкувати за подіями в підземеллях та розкривати їхні таємниці."
     
-    show maks neutral
+
     m "(з газетою в руках) Неллі, поглядай на цю статтю. Підземелля Таємниць. Це те саме місце, яке ми зараз досліджуємо. "
-    hide maks neutral
-    show nelli neutral
+
+    show nelli_neutral_hands_behind
     n "(зацікавлено) Що тут написано?"
-    hide nelli neutral
-    show maks neutral
+    hide nelli_neutral_hands_behind
+
     m "(читає вголос) Багато відважних розпочинали свою подорож у ці загадкові підземелля, але лише кілька поверталися. Більшість зникли безвісти. Деякі стверджують, що бачили дивовижні створіння, інші впадали в галюцинації..."
-    hide maks neutral
-    show nelli neutral
+
+    show nelli_thinking_hands_straight
     n "(налякано) Чи ми не впадемо в галюцинації? Це все реально?"
-    hide nelli neutral
-    show maks neutral
+    hide nelli_thinking_hands_straight
+
     m "Науковці стверджують, що це може бути пов'язане з низьким рівнем кисню та природними газами у підземеллях. Але щось мені підказує, що це не тільки наука."
     m "Ми повинні залишатися насторожі. Нам доведеться бути розумнішими за тих, хто раніше намагався вибратися звідси."
-    hide maks neutral
-    show nelli neutral
+
     n "Ми неодмінно знайдемо вихід, Макс. Я вірю в нас."
-    hide nelli neutral
 
+    show nelli_angry_arms_on_belt
+    jump find_note
+
+label find_note:
     # записка (imagemap)
+    call screen secondScreen
+    return
 
+label continue_play:
+    hide nelli_angry_arms_on_belt
     "У цих кам'яних стінах спочиває розгадка, Три руни відкриють тобі вихід в світло."
-    show maks neutral
     m "(подумки) Руни на кам'яних стінах... це може бути підказка..."
-    hide maks neutral
+    jump find_flashlight
 
-    # ліхтарик (imagemap)
-    # якщо обрали ліхтарик:
-    show maks neutral
+# ліхтарик (imagemap)
+label find_flashlight:
+    call screen flashlightFound
+    return
+
+label flashlight_found:
+    play sound flashlight volume 3.0
+
     m "(подумки) А ось це тут точно не буде зайвим."
 
-    # записка
-    m "(подумки) Якись дивний набір символів, нічого не можу розібрати"
-
     # скеля (imagemap)
-    # якщо обрали скелю:
-    hide maks neutral
     show nelli neutral
     n "Макс, можливо, нам потрібно знайти ці руни та вставити їх у скелю. Я впевнена, це ключ до виходу."
     hide nelli neutral
@@ -193,30 +222,62 @@ menu:
         jump choices2_b
 
 label choices2_a:
-    show maks neutral
+
     m "Так, ти маєш рацію. Ми повинні їх знайти, можливо це допоможе нам вибратись звідси."
-    hide maks neutral
+
     jump choices2_common
 
 label choices2_b:
-    show maks neutral
+
     m "Неллі, навіть якщо ми вставимо ці руни, нічого не відбудеться. Це не гра"
-    hide maks neutral
-    show nelli neutral
+
+    show nelli_neutral_hands_behind
     n "Я розумію твої сумніви. Але ми не можемо просто чекати тут без дії."
     n "Я вірю, що це може спрацювати. Давай спробуємо, може, ми знайдемо вихід разом"
-    hide nelli neutral
-    show maks neutral
+    hide nelli_neutral_hands_behind
+
     m "Добре, Неллі. Хоч це і звучить безглуздо, але варіантів небагато"
-    hide maks neutral
+
     jump choices2_common
 
 label choices2_common:
     # руни
+    scene bg next1
+    call screen thirdScreen
+    return
+
+label first_completed:
+    play sound runas1 volume 2.0
+    scene bg one with dissolve
+    #stop sound
+    call screen firstCompleted
+    return
+
+label second_completed:
+    play sound runas1 volume 2.0
+    scene bg two with dissolve
+    #stop sound
+    call screen secondCompleted
+    return
+
+label third_completed:
+    play sound runas1 volume 2.0
+    scene bg three with dissolve
+    #stop sound
+    call screen thirdCompleted
+    return
+
+label fourth_screen:
+    play sound door volume 2.0
+    scene bg unlocked with fade
+    #stop sound
+    jump play_next
+
+label play_next:
     "Великі кам'яні брили відокремлюються, і скеля розсувається, відкриваючи новий прохід. Максвел та Неллі стоять в повному шоці, бо стали свідками дива"
-    show maks neutral
+
     m "Що за... Я не міг уявити, що це може відбутися. Це не землетрус, це... це щось надприродне."
-    hide maks neutral
+
     show nelli neutral
     n "Макс, ти бачиш це? Скелю тільки що розсунуло, мов намагається відкрити нам шлях. Це неймовірно!"
     hide nelli neutral
@@ -231,57 +292,66 @@ label new_choices:
             jump choices3_b
 
     label choices3_a:
-        show maks neutral
+    
         m "Неллі, можливо, краще залишитись тут і докладніше роздивитись оті руни?"
         m "Що якщо ще є якась важлива інформація, яку ми пропустили?"
-        hide maks neutral
-        show nelli neutral
+    
+        show nelli_thinking_hands_behind
         n "Ти впевнений? Мені здається, що нам варто йти вперед. Хто знає, що ще може бути за тим поворотом."
         n "Можливо, це ключ до виходу."
-        hide nelli neutral
+        hide nelli_thinking_hands_behind
         jump choices3_common
 
     label choices3_b:
-        show maks neutral
+    
         m "Неллі, я вважаю, що нам потрібно піти вперед. Скеля відкрилась, і хто знає, що нас чекає далі. Можливо, це дорога до виходу."
-        hide maks neutral
-        show nelli neutral
+    
+        show nelli_neutral_arms_on_belt
         n "Ти правий, Макс. Давай підемо разом і дізнаємося, що там."
-        hide nelli neutral
+        hide nelli_neutral_arms_on_belt
         jump choices3_common
 
     label choices3_common:
         # Коли гравець потрапив на локацію 2
+        play sound rustle
+        scene bg dark
         show nelli neutral
+        #stop sound
         n "Макс, ти чув? Нічого не видно, мені здається, що тут ми не одні, будь тихі..."
+        stop sound
         hide nelli neutral
         show bob light
+        play sound boo
+        #stop sound
         nn "Бу!!! Злякались?"
+        stop sound
         hide bob light
 
-        show maks neutral
+    
         m "Ти в своєму розумі? Що відбувається?"
-        hide maks neutral
+    
         show bob happy
         bob "Та що ти? Мене звати Боб. Ви також застрягли тут як і я?"
         hide bob happy
-        show maks neutral
+    
         m "Виходить, що так"
-        hide maks neutral
+    
         show bob happy
         bob "А сказати як вас звати, ви не хочете представитись?"
         hide bob happy
-        show maks neutral
+    
         m "Ну, її звати Неллі, мене Максвел"
-        hide maks neutral
+    
         show bob happy
         bob "Максвел?? А-ха-ха-ха, так звали улюблену собаку моєї тітки!"
         hide bob happy
         m "..."
+
+        scene bg location2
         "Неллі, Максвел та Боб попрямували далі"
-        show maks neutral
+        #show maks neutral
         m "(подумки) Не буду казати Бобу про те, що в нас є ліхтарик"
-        hide maks neutral
+        #hide maks neutral
         show bob happy
         bob "Це таке диво! Я взагалі не розумію, як я сюди потрапив"
         bob "Пошукавши довкола, я натрапив на дивну записку. Там написано, що є зачароване дзеркало, яке не відображає особу, і те, що його потрібно зібрати..."
@@ -296,33 +366,53 @@ label new_choices:
         "Серед темряви та відламаних відбитків, Дзекало приховує чарівну таємницю. Збери його частини, і світло розкриється, Дорогу вибереш, коли об'єднаєш його в цілісність."
 
         # іграшковий літак
-        show maks neutral
+        # записка
+        call screen findNote2
+        return
 
-        #записка з незрозумілими символами
-        m "(подумки)Якись дивний набір символів, нічого не можу розібрати"
+#записка з незрозумілими символами
+label continue_search:
 
-        # фотоапарат
-        "Відеокамера. На його корпусі присутні сліди масла"
-        m "Ця відеокамера виглядає як новенька. Здається, що тут недавно хтось був. Але шкода, що вона заблокована паролем. Навіть не можу переглянути що на ній"
-        m "Можливо, у нас є шанс дізнатися більше про те, що тут трапилось, якщо вдасться розгадати цей пароль"
-        hide maks neutral
+    m "(подумки)Якись дивний набір символів, нічого не можу розібрати"
 
-        # Гравець може нажати на дзеркало, починаючи складати по факту пазл до купи
-        # Якщо зібрав, Дзеркало відновлюється і показується лист
-        # зміст листа:
-        "Дорога Маргарет, \n Любов моя, як добре було б тут нам разом. Кожен день, коли ти не зі мною, стає набагато важчим. Моє серце б'ється лише за тобою, і я дуже сумую."
-        "Ти завжди була для мене опорою і найкращим другом. Немає дня, коли я не думаю про тебе та той момент, коли знову буду біля тебе. Ти - моє світло, яке освітлює мій шлях, і я не можу дочекатися того дня, коли це світло знову освітить моє життя."
-        "Щоби ми були разом, мені доведеться виїхати в невелике відрядження. Я залишу місто 17 липня і повернуся назад в кінці місяця. Обіцяю, що ця розлука зміцнить наше кохання і наш зв'язок. Незважаючи на відстань, ми завжди поруч. Скоро ми знову будемо разом, і я зможу тримати тебе в своїх обіймах."
-        "З любов'ю, \n Томас"
+    call screen findCamera
+    return
 
-        "Максвел, прочитавши цей діалог, почув дивний звук, повернувши дзеркало, він побачив  карточку, на якій написано '17'"
+label find_camera:
+    # фотоапарат
 
-        show maks neutral
-        m "Що за...? Неллі, чула цей дивний звук? І подивись, що я тут знайшов. Напис з числом '17'. Як воно пов'язане з усім цим?"
-        hide maks neutral
-        show nelli neutral
-        n "Думаю, це число пов'язане з листом. Томас писав, що він вирушає у відрядження 17 липня. Можливо, це той момент, коли він туди поїхав."
-        hide nelli neutral
+    "Відеокамера. На його корпусі присутні сліди масла"
+    m "Ця відеокамера виглядає як новенька. Здається, що тут недавно хтось був. Але шкода, що вона заблокована паролем. Навіть не можу переглянути що на ній"
+    m "Можливо, у нас є шанс дізнатися більше про те, що тут трапилось, якщо вдасться розгадати цей пароль"
+
+    call screen firsParticle
+    return
+    
+label keep_searching:
+    scene bg location21 with dissolve
+    call screen secondParticle
+    return
+
+label keep_looking:
+    scene bg location22 with dissolve
+    call screen lastParticle
+    return
+
+label keep_going:
+    scene bg location3 with dissolve
+    "Дорога Маргарет, \n Любов моя, як добре було б тут нам разом. Кожен день, коли ти не зі мною, стає набагато важчим. Моє серце б'ється лише за тобою, і я дуже сумую."
+    "Ти завжди була для мене опорою і найкращим другом. Немає дня, коли я не думаю про тебе та той момент, коли знову буду біля тебе. Ти - моє світло, яке освітлює мій шлях, і я не можу дочекатися того дня, коли це світло знову освітить моє життя."
+    "Щоби ми були разом, мені доведеться виїхати в невелике відрядження. Я залишу місто 17 липня і повернуся назад в кінці місяця. Обіцяю, що ця розлука зміцнить наше кохання і наш зв'язок. Незважаючи на відстань, ми завжди поруч. Скоро ми знову будемо разом, і я зможу тримати тебе в своїх обіймах."
+    "З любов'ю, \n Томас"
+
+    "Максвел, прочитавши цей діалог, почув дивний звук, повернувши дзеркало, він побачив  карточку, на якій написано '17'"
+
+
+    m "Що за...? Неллі, чула цей дивний звук? І подивись, що я тут знайшов. Напис з числом '17'. Як воно пов'язане з усім цим?"
+
+    show nelli neutral
+    n "Думаю, це число пов'язане з листом. Томас писав, що він вирушає у відрядження 17 липня. Можливо, це той момент, коли він туди поїхав."
+    hide nelli neutral
 
 menu:
         "Погодитись":
@@ -331,9 +421,9 @@ menu:
             jump choices4_b
 
 label choices4_a:
-        show maks neutral
+    
         m "Можливо, ти маєш рацію. Здається, що це число - ключ до подальшого розвитку подій. Можливо, нам варто докладніше розглянути це та з'ясувати, що воно нам розкаже."
-        hide maks neutral
+    
 
         show nelli neutral
         n "Він точно містить ключову інформацію."
@@ -341,9 +431,9 @@ label choices4_a:
         jump choices4_common
 
 label choices4_b:
-        show maks neutral
+    
         m "Неллі, це все маячня. Я не вірю в ці загадки та числа. Можливо, це випадковість, і нам не варто витрачати час на це."
-        hide maks neutral
+    
 
         show nelli neutral
         n "Але це так дивно, що це число відповідає даті відрядження Томаса. Можливо, у цьому є якась важлива інформація, яку ми поки не розуміємо."
@@ -355,6 +445,7 @@ label choices4_common:
     
     #[Відкривається прохід далі, перший вирушає БОБ]
     #\3 локація:\
+    scene bg location3 with fade
     bob "Не гайте часу, заходьте швидше. Загадки чекають на нас!"
 
     #(Ліхтарик гасне)
@@ -371,8 +462,10 @@ label choices4_common:
 
     #[Максвел швидко хапає Неллі і вони ховаються за стіною]
     #\Відрізаний крик Боба\
+    play sound scream
     m "(в думках) Коли я почув останній крик Боба, час перестав йти для мене."
     m "(в думках) Я боявся видавати звуки, навіть дихання. Мені було дуже страшно."
+    stop sound
     m "(в думках) В мить я подумав, що вже розстався зі своїм життям, як і Боб. Я ніби-то випав з реальності."
     m "(в думках) Я вже почав уявляти, що відбулось з Бобом, але з цього стану мене витянула Неллі, котра товкала мене в плече."
     m "(в думках) Ще деякий час я просто дивився на неї. На її лиці був страх і нерозуміння."
