@@ -1,11 +1,8 @@
-define config.mouse = { }
-define config.mouse['default'] = [ ("gui/cursor.png", 0, 0) ]
-
 #Define chars
-define m = Character("Максвел", color="#597bd1")
-define n = Character("Неллі", color="#cf5488")
+define m = Character("Максвел", color="#13244f")
+define n = Character("Неллі", color="#6f4a19")
 define nn = Character("???")
-define bob = Character("Боб", color="#37ff00")
+define bob = Character("Боб", color="#23421b")
 
 #Define audio
 define audio.background = "audio/backgroundMusic.mp3"
@@ -15,12 +12,6 @@ define audio.rustle = "audio/unknownRustle.mp3"
 define audio.runas1 = "audio/runasFind1.mp3"
 define audio.door = "audio/stoneDoor.mp3"
 define audio.flashlight = "audio/flashlightOn.mp3"
-
-default page_pieces = 3
-default full_page_size = (72, 67)
-default piece_coordinates = [(1411, 529), (1445, 529), (1408, 534)]
-default initial_piece_coordinates = []
-default finished_pieces = 0
 
 label start:
     play music background volume 3
@@ -66,26 +57,27 @@ label start:
         blur 15
     "Мене кортіло спитати котра година, проте, відкривши очі, я побачив не свою маму, а когось іншого."
 
-    hide nelli_neutral_hands_behind
+    #hide nelli_neutral_hands_behind
     m "Де я? Хто ти? Що тут взагалі відбувається?"
     show nelli_neutral_hands_behind
 
     n "Мене звати Неллі. - відповіла занепокоїно дівчина. - Я прокинулась досить давно, в мене ніяк не виходило розбудити тебе."
-    hide nelli_neutral_hands_behind
 
     m "Як я тут опинився? Це ти в цьому винна?!"
+    hide nelli_neutral_hands_behind
 
     show nelli second
     n "Я розумію, що ти наляканий, але не потрібно кричати. Я також не розумію, як ми сюди потрапили."
-    hide nelli second
+    #hide nelli second
 
     m "..."
 
-    show nelli second
+    #show nelli second
     n "Як я можу звертатись до тебе?"
-    hide nelli second
+    #hide nelli second
 
     m "Я Максвел, але можна просто Макс."
+    hide nelli second
 
     "Максвел і Неллі ретельно досліджують підземелля, обговорюючи місцеві дивовижності."
     scene bg location1 with dissolve
@@ -183,10 +175,10 @@ label continue_game:
 
     m "Науковці стверджують, що це може бути пов'язане з низьким рівнем кисню та природними газами у підземеллях. Але щось мені підказує, що це не тільки наука."
     m "Ми повинні залишатися насторожі. Нам доведеться бути розумнішими за тих, хто раніше намагався вибратися звідси."
-
+    show nelli_angry_arms_on_belt
     n "Ми неодмінно знайдемо вихід, Макс. Я вірю в нас."
 
-    show nelli_angry_arms_on_belt
+    hide nelli_angry_arms_on_belt
     jump find_note
 
 label find_note:
@@ -315,36 +307,31 @@ label new_choices:
         # Коли гравець потрапив на локацію 2
         play sound rustle
         scene bg dark
-        show nelli neutral
+        show nelli_neutral_arms_on_belt
         #stop sound
         n "Макс, ти чув? Нічого не видно, мені здається, що тут ми не одні, будь тихі..."
         stop sound
-        hide nelli neutral
+        hide nelli_neutral_arms_on_belt
         show bob light
         play sound boo
         #stop sound
         nn "Бу!!! Злякались?"
         stop sound
-        hide bob light
-
-    
+        #hide bob light
         m "Ти в своєму розумі? Що відбувається?"
-    
-        show bob happy
+        #show bob light
         bob "Та що ти? Мене звати Боб. Ви також застрягли тут як і я?"
-        hide bob happy
-    
         m "Виходить, що так"
-    
-        show bob happy
+        hide bob light
+        show bob_hand3
         bob "А сказати як вас звати, ви не хочете представитись?"
-        hide bob happy
-    
+        #hide bob_hand3
         m "Ну, її звати Неллі, мене Максвел"
-    
-        show bob happy
+        #show bob light
+        hide bob_hand3
+        show bob light
         bob "Максвел?? А-ха-ха-ха, так звали улюблену собаку моєї тітки!"
-        hide bob happy
+        hide bob light
         m "..."
 
         scene bg location2
@@ -352,17 +339,17 @@ label new_choices:
         #show maks neutral
         m "(подумки) Не буду казати Бобу про те, що в нас є ліхтарик"
         #hide maks neutral
-        show bob happy
+        show bob light
         bob "Це таке диво! Я взагалі не розумію, як я сюди потрапив"
         bob "Пошукавши довкола, я натрапив на дивну записку. Там написано, що є зачароване дзеркало, яке не відображає особу, і те, що його потрібно зібрати..."
-        hide bob happy
-        show nelli neutral
+        hide bob light
+        show nelli_neutral_arms_on_belt
         n "Ти що-небудь розібрав з цієї головоломки?"
-        hide nelli neutral
-        show bob happy
+        hide nelli_neutral_arms_on_belt
+        show bob light
         bob "Я вже не першу годину пробую його зібрати, але марно, мені потрібна допомога."
         "Боб передає записку Максвелу і Неллі"
-        hide bob happy
+        hide bob light
         "Серед темряви та відламаних відбитків, Дзекало приховує чарівну таємницю. Збери його частини, і світло розкриється, Дорогу вибереш, коли об'єднаєш його в цілісність."
 
         # іграшковий літак
@@ -372,19 +359,15 @@ label new_choices:
 
 #записка з незрозумілими символами
 label continue_search:
-
     m "(подумки)Якись дивний набір символів, нічого не можу розібрати"
-
     call screen findCamera
     return
 
 label find_camera:
     # фотоапарат
-
     "Відеокамера. На його корпусі присутні сліди масла"
     m "Ця відеокамера виглядає як новенька. Здається, що тут недавно хтось був. Але шкода, що вона заблокована паролем. Навіть не можу переглянути що на ній"
     m "Можливо, у нас є шанс дізнатися більше про те, що тут трапилось, якщо вдасться розгадати цей пароль"
-
     call screen firsParticle
     return
     
@@ -407,12 +390,11 @@ label keep_going:
 
     "Максвел, прочитавши цей діалог, почув дивний звук, повернувши дзеркало, він побачив  карточку, на якій написано '17'"
 
-
     m "Що за...? Неллі, чула цей дивний звук? І подивись, що я тут знайшов. Напис з числом '17'. Як воно пов'язане з усім цим?"
 
-    show nelli neutral
+    show nelli_thinking_hands_behind
     n "Думаю, це число пов'язане з листом. Томас писав, що він вирушає у відрядження 17 липня. Можливо, це той момент, коли він туди поїхав."
-    hide nelli neutral
+    hide nelli_thinking_hands_behind
 
 menu:
         "Погодитись":
@@ -421,9 +403,7 @@ menu:
             jump choices4_b
 
 label choices4_a:
-    
         m "Можливо, ти маєш рацію. Здається, що це число - ключ до подальшого розвитку подій. Можливо, нам варто докладніше розглянути це та з'ясувати, що воно нам розкаже."
-    
 
         show nelli neutral
         n "Він точно містить ключову інформацію."
@@ -431,31 +411,37 @@ label choices4_a:
         jump choices4_common
 
 label choices4_b:
-    
         m "Неллі, це все маячня. Я не вірю в ці загадки та числа. Можливо, це випадковість, і нам не варто витрачати час на це."
-    
 
-        show nelli neutral
+        show nelli_thinking_hands_straight
         n "Але це так дивно, що це число відповідає даті відрядження Томаса. Можливо, у цьому є якась важлива інформація, яку ми поки не розуміємо."
-        hide nelli neutral
+        hide nelli_thinking_hands_straight
         jump choices4_common
 
 label choices4_common:
+    show bob_straight3
     bob "Дивіться, тепер після вирішення цієї загадки я можу зсунути прохід в іншу кімнату!"
-    
+    hide bob_straight3
     #[Відкривається прохід далі, перший вирушає БОБ]
     #\3 локація:\
     scene bg location3 with fade
+    show bob_straight2
     bob "Не гайте часу, заходьте швидше. Загадки чекають на нас!"
-
+    hide bob_straight2
     #(Ліхтарик гасне)
     m "Не можу ввімкнути фонарик Боба. Схоже, заряд батарейки закінчився."
     nn "???"
     m "Дивні звуки... Схожі на схлипування. Це чули всі, чи це тільки в моїй голові?"
+    show nelli_neutral_arms_on_belt
     n "Тут щось не так, будемо обережнішими."
+    hide nelli_neutral_arms_on_belt
+    show bob_straight4
     bob "Аго-ов, тут є хто?"
+    hide bob_straight4
     m "Я думаю, тут є хтось крім нас. Краще не кричи."
+    show bob_straight2
     bob "Навіть якщо є, я йому так смачно наваляю! Ви лише покладіться на мене."
+    hide bob_straight2
 
     #[Звук, який чув Максвел, став на багато голоснішим.]
     m "Неллі!"
