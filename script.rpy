@@ -1,3 +1,6 @@
+define config.mouse = { }
+define config.mouse['default'] = [ ("gui/cursor.png", 0, 0) ]
+
 #Define chars
 define m = Character("Максвел", color="#13244f")
 define n = Character("Неллі", color="#6f4a19")
